@@ -34,9 +34,9 @@ const Card = (article) => {
 
 
 
-  headlinediv.textContent = `${data.headline}`
-  image.src = data.authorPhoto
-  span.textContent =`By ${data.authorName}`
+  headlinediv.textContent = article.headline
+  image.src = article.authorPhoto
+  span.textContent =`By ${article.authorName}`
 
   carddiv.appendChild(headlinediv)
   carddiv.appendChild(authordiv)
@@ -45,7 +45,7 @@ const Card = (article) => {
   authordiv.appendChild(span)
   
   carddiv.addEventListener("click", event =>{
-    console.log(data.headline)
+    console.log(article.headline)
   })
 
 
@@ -63,10 +63,37 @@ const cardAppender = (selector) => {
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
   axios.get("https://lambda-times-api.herokuapp.com/articles")
-  .then(res =>{
-    res.data.articles
+  .then( (res) => {
+
+    const boots = res.data.articles.bootstrap;
+    boots.forEach((boot) => {
+      console.log(res.data.articles.bootstrap)
+       document.querySelector(selector).appendChild(Card(boot))
+    })
+    
+    const jscript = res.data.articles.javascript
+    jscript.forEach((script) => {
+       document.querySelector(selector).appendChild(Card(script))
+    })
+
+    const jquery = res.data.articles.jquery
+    jquery.forEach((query) => {
+      document.querySelector(selector).appendChild(Card(query))
+    })
+
+    const nodes = res.data.articles.node
+    nodes.forEach((node) => {
+      document.querySelector(selector).appendChild(Card(node))
+    })
+
+    const techs = res.data.articles.technology
+    techs.forEach((tech) => {
+      document.querySelector(selector).appendChild(Card(tech))
+    })
+
+    
   })
-  .catch(err =>{
+  .catch( err =>{
     console.log(err)
   })
   
