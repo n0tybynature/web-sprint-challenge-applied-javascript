@@ -1,3 +1,21 @@
+import axios from "axios"
+
+
+
+const URL = "https://lambda-times-api.herokuapp.com/topics"
+
+
+axios .get(URL)
+  .then(res => {
+    console.log(res.data)
+    
+    
+  })
+  .catch(err => {
+    console.log("drama")
+  })
+
+
 const Tabs = (topics) => {
   // TASK 3
   // ---------------------
@@ -13,7 +31,27 @@ const Tabs = (topics) => {
   //   <div class="tab">technology</div>
   // </div>
   //
+  const topicsdiv = document.createElement("div")
+  topicsdiv.classList.add("topics")
+
+
+    
+  topics.forEach( (topic) => {
+    const topicName = document.createElement("div")
+    topicName.classList.add("tab")
+    topicName.textContent = topic
+    topicsdiv.appendChild(topicName)
+      
+    } )
+  
+
+  
+
+  return topicsdiv;
 }
+
+
+
 
 const tabsAppender = (selector) => {
   // TASK 4
@@ -23,6 +61,18 @@ const tabsAppender = (selector) => {
   // Find the array of topics inside the response, and create the tabs using the Tabs component.
   // Append the tabs to the element in the DOM that matches the selector passed to the function.
   //
+  const holder = document.querySelector(".tabs-container")
+
+  axios
+    .get("https://lambda-times-api.herokuapp.com/topics")
+    .then( res => {
+      document.querySelector(selector).appendChild(Tabs(res.data.topics))
+    })
+    .catch( err => {
+      console.log(err)
+    })
+
+
 }
 
 export { Tabs, tabsAppender }
